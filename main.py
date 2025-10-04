@@ -1,38 +1,41 @@
 import os
 from telegram import Update
-from telegram.ext import Updater, CommandHandler, MessageHandler, CallbackContext, filters
+from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, ContextTypes, filters
 
 TOKEN = os.environ.get("TOKEN")
-IMAGE_FILE = "Birthday Wish.png"  # make sure this file exists
+IMAGE_FILE = "Birthday Wish.png"  # your uploaded image file
 
-def start(update: Update, context: CallbackContext):
+# /start command
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if context.args and "sendpic" in context.args[0].lower():
-        send_image(update)
+        await send_image(update)
     else:
-        update.message.reply_text("Hi! Send the secret word to get your card!!!❤️ ❤️ ❤️")
+        await update.message.reply_text("Hi! Send the secret word to get your card!!!❤️ ❤️ ❤️")
 
-def send_image(update: Update):
+# Function to send image
+async def send_image(update: Update):
     try:
-        update.message.reply_photo(open(IMAGE_FILE, 'rb'))
+        await update.message.reply_photo(open(IMAGE_FILE, 'rb'))
     except Exception as e:
-        update.message.reply_text(f"Error sending image: {e}")
+        await update.message.reply_text(f"Error sending image: {e}")
 
-def handle_message(update: Update, context: CallbackContext):
+# Handle text messages
+async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = update.message.text.lower()
     if "10/10/2002" in text:
-        send_image(update)
+        await send_image(update)
     else:
-        update.message.reply_text("Wrong word! Try again.")
+        await update.message.reply_text("Wrong word! Try again.")
 
+# Main function
 def main():
-    updater = Updater(TOKEN)
-    dp = updater.dispatcher
+    app = ApplicationBuilder().token(TOKEN).build()
 
-    dp.add_handler(CommandHandler("start", start, pass_args=True))
-    dp.add_handler(MessageHandler(filters.TEXT & (~filters.COMMAND), handle_message))
+    app.add_handler(CommandHandler("start", start))
+    app.add_handler(MessageHandler(filters.TEXT & (~filters.COMMAND), handle_message))
 
-    updater.start_polling()
-    updater.idle()
+    print("Bot is running...")
+    app.run_polling()
 
 if __name__ == "__main__":
     main()
