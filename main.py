@@ -3,7 +3,7 @@ from telegram import Update
 from telegram.ext import ApplicationBuilder, ContextTypes, MessageHandler, filters
 
 # Get token from environment variable
-TOKEN = os.getenv("TOKEN")
+TOKEN = "8252936732:AAGYulWg2cnqnZ2iyd4ypbpskO1v9qHabwY"
 IMAGE_PATH = "Birthday Wish.png"  # make sure this file is uploaded to Pella
 TRIGGER_MESSAGE = "10/10/2002"  # the specific message that triggers the image
 
