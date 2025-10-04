@@ -3,7 +3,7 @@ from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, ContextTypes, filters
 
 TOKEN = os.environ.get("TOKEN")
-IMAGE_FILE = "Birthday Wish.png"  # your uploaded image file
+IMAGE_FILE = "Birthday Wish.png"  # your uploaded picture file
 
 # /start command
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
