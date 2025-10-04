@@ -9,7 +9,7 @@ from telegram.ext import (
 
 # === BOT SETTINGS ===
 TOKEN = "8252936732:AAGYulWg2cnqnZ2iyd4ypbpskO1v9qHabwY"
-IMAGE_PATH = "Birthday Wish.png"  # make sure this file is in the same folder as main.py
+IMAGE_PATH = "Wishing Birthday.png"  # make sure this file is in the same folder as main.py
 TRIGGER_MESSAGE = "10/10/2002"    # message that triggers the image
 
 # === /start command ===
