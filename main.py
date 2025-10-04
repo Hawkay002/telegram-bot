@@ -1,24 +1,33 @@
-import os
 from telegram import Update
-from telegram.ext import ApplicationBuilder, ContextTypes, MessageHandler, filters
+from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, ContextTypes, filters
 
-# Get token from environment variable
+# Your bot token
 TOKEN = "8252936732:AAGYulWg2cnqnZ2iyd4ypbpskO1v9qHabwY"
-IMAGE_PATH = "Birthday Wish.png"  # make sure this file is uploaded to Pella
-TRIGGER_MESSAGE = "10/10/2002"  # the specific message that triggers the image
 
+# File to send
+IMAGE_PATH = "Birthday Wish.png"  # make sure this file is in the same folder as main.py
+
+# Trigger message
+TRIGGER_MESSAGE = "10/10/2002"  # the secret word or phrase
+
+# --- Command handler ---
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text("Hi! Send the secret word you just copied to get your card!❤️ ❤️ ❤️")
+
+# --- Message handler ---
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.message.text and update.message.text.lower() == TRIGGER_MESSAGE.lower():
         await update.message.reply_photo(photo=open(IMAGE_PATH, "rb"))
     else:
-        await update.message.reply_text("I only respond to the specific trigger message.")
+        await update.message.reply_text("I only reply to the specific keyword.")
 
+# --- Main program ---
 if __name__ == "__main__":
     app = ApplicationBuilder().token(TOKEN).build()
 
-    # Listen for all text messages except commands
-    handler = MessageHandler(filters.TEXT & (~filters.COMMAND), handle_message)
-    app.add_handler(handler)
+    # Register handlers
+    app.add_handler(CommandHandler("start", start))
+    app.add_handler(MessageHandler(filters.TEXT & (~filters.COMMAND), handle_message))
 
-    # Start the bot
+    # Start polling
     app.run_polling()
